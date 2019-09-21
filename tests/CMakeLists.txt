@@ -1,7 +1,7 @@
 # cmake file for tests/
 
-file(GLOB_RECURSIVE sourcefiles
-    ${CURRENT_SOURCE_DIR}/*.cpp
+file(GLOB_RECURSE sourcefiles
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
     )
 
 add_executable(MyTinyRenderer_Tests

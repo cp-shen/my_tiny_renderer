@@ -1,7 +1,7 @@
 # cmake file for src/
 
 file(GLOB_RECURSE sourcefiles
-    ${CURRENT_SOURCE_DIR}/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
     )
 
 add_library(MyTinyRenderer SHARED

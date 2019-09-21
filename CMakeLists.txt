@@ -5,4 +5,10 @@ project(MyTinyRenderer)
 
 set(CMAKE_CXX_STANDARD 14)
 
+option(BUILD_TESTS "build tests or not" ON)
+
 add_subdirectory(${MyTinyRenderer_SOURCE_DIR}/src)
+
+if(BUILD_TESTS)
+    add_subdirectory(${MyTinyRenderer_SOURCE_DIR}/tests)
+endif()

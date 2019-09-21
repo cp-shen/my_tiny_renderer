@@ -6,6 +6,7 @@ private:
 public:
     MyGL ();
     virtual ~MyGL ();
+    static void DrawLine();
 };
 
 #endif /* MYGL_H */

@@ -1,6 +1,7 @@
+#include <catch2/catch.hpp>
 #include <png++/png.hpp>
 
-int main()
+TEST_CASE("Draw Png")
 {
     png::image<png::rgb_pixel> image(128, 128);
 
@@ -11,6 +12,4 @@ int main()
     }
 
     image.write("rgb.png");
-
-    return 0;
 }
