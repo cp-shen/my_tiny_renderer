@@ -58,11 +58,11 @@ TEST_CASE("Draw Wireframe")
                 int x1 = (vx1 + 1.) * image_width / 2.;
                 int y1 = (vy1 + 1.) * image_height / 2.;
 
-                REQUIRE(x0 >= 0 && x0 < image_width);
-                REQUIRE(y0 >= 0 && y0 < image_height);
+                REQUIRE((x0 >= 0 && x0 < image_width));
+                REQUIRE((y0 >= 0 && y0 < image_height));
 
-                REQUIRE(x1 >= 0 && x1 < image_width);
-                REQUIRE(y1 >= 0 && y1 < image_height);
+                REQUIRE((x1 >= 0 && x1 < image_width));
+                REQUIRE((y1 >= 0 && y1 < image_height));
 
                 // Draw Wireframe
                 REQUIRE_NOTHROW(MyGL::DrawLine(x0, y0, x1, y1, image, pixel_white));
