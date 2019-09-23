@@ -74,5 +74,6 @@ TEST_CASE("Draw Wireframe")
         }
     }
 
+    MyGL::FlipImageVert(image);
     image.write(filename);
 }

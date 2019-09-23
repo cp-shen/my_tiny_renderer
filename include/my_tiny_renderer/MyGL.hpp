@@ -29,6 +29,10 @@ public:
             png::image<png::rgb_pixel>& image,
             png::rgb_pixel& color
             );
+
+    //TODO: should not place this method here
+    //TODO: support image types other than rgb_pixel
+    static void FlipImageVert(png::image<png::rgb_pixel>& image);
 };
 
 #endif /* MYGL_H */

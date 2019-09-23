@@ -54,5 +54,17 @@ void MyGL::DrawLine (
         std::runtime_error err(errStr.str());
         throw err;
     }
+}
 
+void MyGL::FlipImageVert(png::image<png::rgb_pixel>& image)
+{
+    for (size_t row_idx = 0; row_idx < image.get_height() / 2; row_idx++) {
+        size_t row_idx2 = image.get_height() - row_idx - 1;
+
+        auto& buf = image.get_pixbuf();
+        auto tmp = buf.get_row(row_idx);
+
+        buf.put_row(row_idx, buf.get_row(row_idx2));
+        buf.put_row(row_idx2, tmp);
+    }
 }
