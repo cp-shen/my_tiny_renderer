@@ -6,6 +6,11 @@ project(MyTinyRenderer)
 set(CMAKE_CXX_STANDARD 14)
 
 option(BUILD_TESTS "build tests or not" ON)
+option(DEBUG "build debug symbols or not" OFF)
+
+if(DEBUG)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
 
 add_subdirectory(${MyTinyRenderer_SOURCE_DIR}/src)
 
