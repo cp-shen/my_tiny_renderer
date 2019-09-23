@@ -23,6 +23,12 @@ void MyGL::DrawLine (
         std::swap(y0, y1);
     }
 
+    // only one point in the line
+    if (x0 == x1) {
+        image.set_pixel(x0, y0, color);
+        return;
+    }
+
     try {
         for (int x = x0; x <= x1; x++) {
             float t = (x - x0) / (float)(x1 - x0);
