@@ -11,5 +11,5 @@ TEST_CASE("Draw Png")
         }
     }
 
-    image.write("rgb.png");
+    image.write("test_png.png");
 }
