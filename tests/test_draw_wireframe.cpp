@@ -4,7 +4,7 @@
 
 TEST_CASE("Draw Wireframe")
 {
-    const char* filename = "test_draw_wireframe.png";
+    const char* image_name = "test_draw_wireframe.png";
     const int image_height = 800;
     const int image_width = 800;
 
@@ -75,5 +75,5 @@ TEST_CASE("Draw Wireframe")
     }
 
     MyGL::FlipImageVert(image);
-    image.write(filename);
+    image.write(image_name);
 }

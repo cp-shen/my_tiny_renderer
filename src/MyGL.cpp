@@ -1,4 +1,5 @@
 #include <my_tiny_renderer/MyGL.hpp>
+#include <my_tiny_renderer/Box.hpp>
 #include <sstream>
 
 void MyGL::DrawLine (
@@ -9,9 +10,11 @@ void MyGL::DrawLine (
             png::image<png::rgb_pixel>& image,
             png::rgb_pixel& color)
 {
-    int deltaX = std::abs(x0 - x1);
-    int deltaY = std::abs(y0 - y1);
-    bool transposed = deltaX < deltaY;
+    int image_width = image.get_width();
+    int image_height = image.get_height();
+    Box box = Box(image_width, image_height);
+
+    bool transposed = std::abs(x1 - x0) < std::abs(y1 - y0);
 
     if (transposed) {
         std::swap(x0, y0);
@@ -23,6 +26,9 @@ void MyGL::DrawLine (
         std::swap(y0, y1);
     }
 
+    int deltaX = x1 - x0;
+    int deltaY = y1 - y0;
+
     // only one point in the line
     if (x0 == x1) {
         image.set_pixel(x0, y0, color);
@@ -30,15 +36,28 @@ void MyGL::DrawLine (
     }
 
     try {
+        int y = y0;
+        float error = 0;
+        float deltaError = std::abs(deltaY / (float)deltaX);
         for (int x = x0; x <= x1; x++) {
-            float t = (x - x0) / (float)(x1 - x0);
-            int y = y0 + t * (y1 - y0);
-
             if (transposed) {
-                image.set_pixel(y, x, color);
+                if(box.CheckPointInBox(glm::vec2(y, x)))
+                    image.set_pixel(y, x, color);
+                else
+                    throw std::runtime_error("draw failure: "
+                            + std::to_string(y) + ", " + std::to_string(x) + ", " + std::to_string(transposed));
             }
             else {
-                image.set_pixel(x, y, color);
+                if(box.CheckPointInBox(glm::vec2(x, y)))
+                    image.set_pixel(x, y, color);
+                else
+                    throw std::runtime_error("draw failure: "
+                            + std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(transposed));
+            }
+            error += deltaError;
+            if (error >= 0.5) {
+                y += (deltaY > 0 ? 1 : -1);
+                error -= 1;
             }
         }
     }

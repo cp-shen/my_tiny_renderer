@@ -12,7 +12,7 @@ public:
     MyGL();
     virtual ~MyGL();
     /**
-     * \brief
+     * \brief draw a line using Bresenham's line algorithm
      * \param[in]  x0
      * \param[in]  y0
      * \param[in]  x1
