@@ -1,7 +1,7 @@
 #include <catch2/catch.hpp>
 #include <png++/png.hpp>
 
-TEST_CASE("Draw Png")
+TEST_CASE("test_png")
 {
     png::image<png::rgb_pixel> image(128, 128);
 

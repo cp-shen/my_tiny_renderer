@@ -1,14 +1,14 @@
 #include <catch2/catch.hpp>
 #include <my_tiny_renderer/MyGL.hpp>
 
-TEST_CASE("Draw Line")
+TEST_CASE("draw_line")
 {
     png::rgb_pixel pixel_red(255, 0, 0);
     png::rgb_pixel pixel_white(255, 255, 255);
     unsigned image_size = 128;
     const char* image_name = "a.png";
 
-    SECTION("Draw Line 1") {
+    SECTION("draw_line_1") {
         image_name = "test_draw_line_1.png";
         image_size = 128;
         png::image<png::rgb_pixel> image(image_size, image_size);
@@ -23,7 +23,7 @@ TEST_CASE("Draw Line")
         image.write(image_name);
     }
 
-    SECTION("Draw Line 2") {
+    SECTION("draw_line_2") {
         image_name = "test_draw_line_2.png";
         image_size = 800;
         png::image<png::rgb_pixel> image(image_size, image_size);

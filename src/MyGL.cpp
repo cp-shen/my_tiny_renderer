@@ -54,3 +54,15 @@ void MyGL::FlipImageVert(png::image<png::rgb_pixel>& image)
         buf.put_row(row_idx2, tmp);
     }
 }
+
+void MyGL::FlipImageHor(png::image<png::rgb_pixel>& image)
+{
+    for (size_t row = 0; row < image.get_height(); row++) {
+        for (size_t col = 0; col < image.get_width() / 2; col++) {
+            size_t col_to_swap = image.get_width() - col - 1;
+            auto tmp = image[row][col];
+            image[row][col] = image[row][col_to_swap];
+            image[row][col_to_swap] = tmp;
+        }
+    }
+}

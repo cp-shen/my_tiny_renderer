@@ -2,7 +2,7 @@
 #include <external/tinyobjloader-1.0.7/tiny_obj_loader.h>
 #include <my_tiny_renderer/MyGL.hpp>
 
-TEST_CASE("Draw Wireframe")
+TEST_CASE("draw_wireframe")
 {
     const char* image_name = "test_draw_wireframe.png";
     const int image_height = 800;
