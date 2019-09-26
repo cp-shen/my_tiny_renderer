@@ -8,7 +8,7 @@ void MyGL::DrawLine (
             int x1,
             int y1,
             png::image<png::rgb_pixel>& image,
-            png::rgb_pixel& color)
+            png::rgb_pixel color)
 {
     bool steep = false;
     if (std::abs(x0 - x1) < std::abs(y0 - y1)) {
@@ -40,6 +40,32 @@ void MyGL::DrawLine (
             error -= dx * 2;
         }
     }
+}
+
+void MyGL::DrawLine(
+        glm::vec2 v0,
+        glm::vec2 v1,
+        png::image<png::rgb_pixel>& image,
+        png::rgb_pixel color)
+{
+    MyGL::DrawLine(v0.x, v0.y, v1.x, v1.y, image, color);
+}
+
+void MyGL::DrawTriangle(
+        glm::vec2 t0,
+        glm::vec2 t1,
+        glm::vec2 t2,
+        png::image<png::rgb_pixel>& image,
+        png::rgb_pixel color)
+{
+    // bubble sort the vertices lower-to-upper
+    if (t0.y > t1.y) std::swap(t0, t1);
+    if (t1.y > t2.y) std::swap(t1, t2);
+    if (t0.y > t1.y) std::swap(t0, t1);
+
+    MyGL::DrawLine(t0, t1, image, color);
+    MyGL::DrawLine(t0, t2, image, color);
+    MyGL::DrawLine(t1, t2, image, color);
 }
 
 void MyGL::FlipImageVert(png::image<png::rgb_pixel>& image)

@@ -2,6 +2,7 @@
 #define MYGL_H
 
 #include <png++/png.hpp>
+#include <glm/glm.hpp>
 
 /**
  * \brief conataining static methods to draw
@@ -27,7 +28,22 @@ public:
             int x1,
             int y1,
             png::image<png::rgb_pixel>& image,
-            png::rgb_pixel& color
+            png::rgb_pixel color
+            );
+
+    static void DrawLine(
+            glm::vec2 v0,
+            glm::vec2 v1,
+            png::image<png::rgb_pixel>& image,
+            png::rgb_pixel color
+            );
+
+    static void DrawTriangle(
+            glm::vec2 t0,
+            glm::vec2 t1,
+            glm::vec2 t2,
+            png::image<png::rgb_pixel>& image,
+            png::rgb_pixel color
             );
 
     //TODO: should not place this method here
