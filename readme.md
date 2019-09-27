@@ -1,6 +1,6 @@
 # my_tiny_renderer
 
-## dependencies
+## Dependencies
 
 - [png++](https://www.nongnu.org/pngpp/)
 
