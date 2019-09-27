@@ -1,5 +1,5 @@
 #include <catch2/catch.hpp>
-#include <external/tinyobjloader-1.0.7/tiny_obj_loader.h>
+#include <tinyobjloader-1.0.7/tiny_obj_loader.h>
 #include <my_tiny_renderer/MyGL.hpp>
 
 TEST_CASE("draw_wireframe")
