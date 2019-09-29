@@ -73,7 +73,7 @@ void MyGL::DrawTriangle(
     }
     else { // split into two triangles
         float alpha = (t1.y - t0.y) / (t2.y - t0.y);
-        glm::vec2 t3 = glm::mix(t2, t0, alpha);
+        glm::vec2 t3 = glm::mix(t0, t2, alpha);
 
         _DrawFlatBottomTriangle(t1, t3, t2, image, color);
         _DrawFlatTopTriangle(t1, t3, t0, image, color);
@@ -96,6 +96,12 @@ void MyGL::_DrawFlatTopTriangle(
     assert(t1.x != t2.x);
     assert(t0.y < t1.y);
 
+    for(int y = t0.y; y < t2.y; y++) {
+        float alpha = (y - t0.y) / (t2.y - t0.y);
+        glm::vec2 point1 = glm::mix(t0, t2, alpha);
+        glm::vec2 point2 = glm::mix(t0, t1, alpha);
+        DrawLine(point1, point2, image, color);
+    }
 }
 
 void MyGL::_DrawFlatBottomTriangle(
@@ -113,6 +119,13 @@ void MyGL::_DrawFlatBottomTriangle(
     assert(t0.y == t1.y);
     assert(t0.x != t1.x);
     assert(t2.y > t1.y);
+
+    for(int y = t0.y; y < t2.y; y++) {
+        float alpha = (y - t0.y) / (t2.y - t0.y);
+        glm::vec2 point1 = glm::mix(t0, t2, alpha);
+        glm::vec2 point2 = glm::mix(t1, t2, alpha);
+        DrawLine(point1, point2, image, color);
+    }
 }
 
 void MyGL::FlipImageVert(png::image<png::rgb_pixel>& image)
