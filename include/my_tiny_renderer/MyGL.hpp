@@ -9,6 +9,21 @@
  */
 class MyGL {
 private:
+    static void _DrawFlatTopTriangle(
+            glm::vec2 t0,
+            glm::vec2 t1,
+            glm::vec2 t2,
+            png::image<png::rgb_pixel>& image,
+            png::rgb_pixel color
+            );
+
+    static void _DrawFlatBottomTriangle(
+            glm::vec2 t0,
+            glm::vec2 t1,
+            glm::vec2 t2,
+            png::image<png::rgb_pixel>& image,
+            png::rgb_pixel color
+            );
 public:
     MyGL();
     virtual ~MyGL();
@@ -38,6 +53,16 @@ public:
             png::rgb_pixel color
             );
 
+    /**
+     * \brief draw a triangle using top-left rasterization rule
+     * \details
+     * \param[in]  t0
+     * \param[in]  t1
+     * \param[in]  t2
+     * \param[in]  image
+     * \param[in]
+     * \exception
+     */
     static void DrawTriangle(
             glm::vec2 t0,
             glm::vec2 t1,

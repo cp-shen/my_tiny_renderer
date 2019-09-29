@@ -48,7 +48,9 @@ void MyGL::DrawLine(
         png::image<png::rgb_pixel>& image,
         png::rgb_pixel color)
 {
-    MyGL::DrawLine(v0.x, v0.y, v1.x, v1.y, image, color);
+    glm::ivec2 iv0 {std::round(v0.x), std::round(v0.y)};
+    glm::ivec2 iv1 {std::round(v1.x), std::round(v1.y)};
+    MyGL::DrawLine(iv0.x, iv0.y, iv1.x, iv1.y, image, color);
 }
 
 void MyGL::DrawTriangle(
@@ -63,9 +65,54 @@ void MyGL::DrawTriangle(
     if (t1.y > t2.y) std::swap(t1, t2);
     if (t0.y > t1.y) std::swap(t0, t1);
 
-    MyGL::DrawLine(t0, t1, image, color);
-    MyGL::DrawLine(t0, t2, image, color);
-    MyGL::DrawLine(t1, t2, image, color);
+    if (t0.y == t1.y) {
+        _DrawFlatBottomTriangle(t0, t1, t2, image, color);
+    }
+    else if (t1.y == t2.y) {
+        _DrawFlatTopTriangle(t0, t1, t2, image, color);
+    }
+    else { // split into two triangles
+        float alpha = (t1.y - t0.y) / (t2.y - t0.y);
+        glm::vec2 t3 = glm::mix(t2, t0, alpha);
+
+        _DrawFlatBottomTriangle(t1, t3, t2, image, color);
+        _DrawFlatTopTriangle(t1, t3, t0, image, color);
+    }
+}
+
+void MyGL::_DrawFlatTopTriangle(
+        glm::vec2 t0,
+        glm::vec2 t1,
+        glm::vec2 t2,
+        png::image<png::rgb_pixel>& image,
+        png::rgb_pixel color)
+{
+    // bubble sort the vertices lower-to-upper
+    if (t0.y > t1.y) std::swap(t0, t1);
+    if (t1.y > t2.y) std::swap(t1, t2);
+    if (t0.y > t1.y) std::swap(t0, t1);
+
+    assert(t1.y == t2.y);
+    assert(t1.x != t2.x);
+    assert(t0.y < t1.y);
+
+}
+
+void MyGL::_DrawFlatBottomTriangle(
+        glm::vec2 t0,
+        glm::vec2 t1,
+        glm::vec2 t2,
+        png::image<png::rgb_pixel>& image,
+        png::rgb_pixel color)
+{
+    // bubble sort the vertices lower-to-upper
+    if (t0.y > t1.y) std::swap(t0, t1);
+    if (t1.y > t2.y) std::swap(t1, t2);
+    if (t0.y > t1.y) std::swap(t0, t1);
+
+    assert(t0.y == t1.y);
+    assert(t0.x != t1.x);
+    assert(t2.y > t1.y);
 }
 
 void MyGL::FlipImageVert(png::image<png::rgb_pixel>& image)
