@@ -36,6 +36,7 @@ public:
      * \param[in]  image
      * \param[in]  color
      * \exception
+     * TODO: implement diamond exit rule
      */
     static void DrawLine(
             int x0,
@@ -54,7 +55,8 @@ public:
             );
 
     /**
-     * \brief draw a triangle using top-left rasterization rule
+     * \brief draw a triangle using line-sweeping method and
+     *   top-left rasterization rule
      * \details
      * \param[in]  t0
      * \param[in]  t1
@@ -75,7 +77,6 @@ public:
     //TODO: support image types other than rgb_pixel
     static void FlipImageVert(png::image<png::rgb_pixel>& image);
     static void FlipImageHor(png::image<png::rgb_pixel>& image);
-
 };
 
 #endif /* MYGL_H */

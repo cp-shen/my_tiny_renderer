@@ -48,6 +48,7 @@ void MyGL::DrawLine(
         png::image<png::rgb_pixel>& image,
         png::rgb_pixel color)
 {
+    //FIXME: remove roundings
     glm::ivec2 iv0 {std::round(v0.x), std::round(v0.y)};
     glm::ivec2 iv1 {std::round(v1.x), std::round(v1.y)};
     MyGL::DrawLine(iv0.x, iv0.y, iv1.x, iv1.y, image, color);
