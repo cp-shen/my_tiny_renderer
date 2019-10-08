@@ -1,6 +1,8 @@
 #include <my_tiny_renderer/MyGL.hpp>
 #include <my_tiny_renderer/Box.hpp>
+#include <my_tiny_renderer/Math.hpp>
 #include <sstream>
+#include <algorithm>
 
 void MyGL::DrawLine (
             int x0,
@@ -66,18 +68,54 @@ void MyGL::DrawTriangle(
     if (t1.y > t2.y) std::swap(t1, t2);
     if (t0.y > t1.y) std::swap(t0, t1);
 
+    int bias01 = -1;
+    int bias12 = -1;
+    int bias02 = -1;
+
     if (t0.y == t1.y) {
-        _DrawFlatBottomTriangle(t0, t1, t2, image, color);
+        if(t0.x < t1.x)
+            bias02 = 0;
+        else
+            bias12 = 0;
     }
     else if (t1.y == t2.y) {
-        _DrawFlatTopTriangle(t0, t1, t2, image, color);
+        bias12 = 0;
+        if(t1.x < t2.x)
+            bias01 = 0;
+        else
+            bias02 = 0;
     }
     else { // split into two triangles
         float alpha = (t1.y - t0.y) / (t2.y - t0.y);
-        glm::vec2 t3 = glm::mix(t0, t2, alpha);
+        glm::vec2 t3 { glm::mix(t0.x, t2.x, alpha), t1.y };
 
-        _DrawFlatBottomTriangle(t1, t3, t2, image, color);
-        _DrawFlatTopTriangle(t1, t3, t0, image, color);
+        if (t1.x < t3.x) {
+            bias01 = 0;
+            bias12 = 0;
+        }
+        else {
+            bias02 = 0;
+        }
+    }
+
+    // Compute triangle bounding box
+    int minX = std::min({t0.x, t1.x, t2.x});
+    int minY = std::min({t0.y, t1.y, t2.y});
+    int maxX = std::max({t0.x, t1.x, t2.x});
+    int maxY = std::max({t0.y, t1.y, t2.y});
+
+    glm::ivec2 p(0);
+
+    for (p.y = minY; p.y <= maxY; p.y++) {
+        for (p.x = minX; p.x <= maxX; p.x++) {
+            float w0 = Math::EdgeFunction(t1, t2, p) + bias12;
+            float w1 = Math::EdgeFunction(t2, t0, p) + bias02;
+            float w2 = Math::EdgeFunction(t0, t1, p) + bias01;
+
+            if (w0 >= 0 && w1 >= 0 && w2 >= 0) {
+                image.set_pixel(p.x, p.y, color);
+            }
+        }
     }
 }
 
@@ -97,10 +135,13 @@ void MyGL::_DrawFlatTopTriangle(
     assert(t1.x != t2.x);
     assert(t0.y < t1.y);
 
-    for(int y = t0.y; y < t2.y; y++) {
+    const int yStart = (int) std::ceil(t0.y - 0.5f);
+    const int yEnd = (int) std::ceil(t2.y - 0.5f);
+
+    for(int y = yStart; y < yEnd; y++) {
         float alpha = (y - t0.y) / (t2.y - t0.y);
-        glm::vec2 point1 = glm::mix(t0, t2, alpha);
-        glm::vec2 point2 = glm::mix(t0, t1, alpha);
+        glm::vec2 point1 { glm::mix(t0.x, t2.x, alpha), y };
+        glm::vec2 point2 { glm::mix(t0.x, t1.x, alpha), y };
         DrawLine(point1, point2, image, color);
     }
 }
@@ -121,10 +162,13 @@ void MyGL::_DrawFlatBottomTriangle(
     assert(t0.x != t1.x);
     assert(t2.y > t1.y);
 
+    const int yStart = (int) std::ceil(t0.y - 0.5f);
+    const int yEnd = (int) std::ceil(t2.y - 0.5f);
+
     for(int y = t0.y; y < t2.y; y++) {
         float alpha = (y - t0.y) / (t2.y - t0.y);
-        glm::vec2 point1 = glm::mix(t0, t2, alpha);
-        glm::vec2 point2 = glm::mix(t1, t2, alpha);
+        glm::vec2 point1 { glm::mix(t0.x, t2.x, alpha), y };
+        glm::vec2 point2 { glm::mix(t1.x, t2.x, alpha), y };
         DrawLine(point1, point2, image, color);
     }
 }
