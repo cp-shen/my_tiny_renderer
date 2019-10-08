@@ -1,5 +1,5 @@
-#ifndef MYGL_H
-#define MYGL_H
+#ifndef MYGL_HPP
+#define MYGL_HPP
 
 #include <png++/png.hpp>
 #include <glm/glm.hpp>

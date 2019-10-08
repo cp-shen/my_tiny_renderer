@@ -1,5 +1,5 @@
-#ifndef BOX_H
-#define BOX_H
+#ifndef BOX_HPP
+#define BOX_HPP
 
 #include <glm/glm.hpp>
 
@@ -14,4 +14,4 @@ public:
     bool CheckPointOnEgde(glm::vec2 point);
 };
 
-#endif /* BOX_H */
+#endif /* BOX_HPP */
