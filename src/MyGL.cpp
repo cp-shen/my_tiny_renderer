@@ -68,24 +68,31 @@ void MyGL::DrawTriangle(
     if (t1.y > t2.y) std::swap(t1, t2);
     if (t0.y > t1.y) std::swap(t0, t1);
 
+    float val = (t1.y - t0.y) * (t2.x - t1.x) - (t1.x - t0.x) * (t2.y - t1.y);
+    assert(val != 0); // should not be colinear
+    // the 3 vertices should be counter clock-wise
+    if(val > 0) {
+        std::swap(t0, t1);
+    }
+
     int bias01 = -1;
     int bias12 = -1;
     int bias02 = -1;
 
     if (t0.y == t1.y) {
+        bias01 = 0;
         if(t0.x < t1.x)
             bias02 = 0;
         else
             bias12 = 0;
     }
     else if (t1.y == t2.y) {
-        bias12 = 0;
         if(t1.x < t2.x)
             bias01 = 0;
         else
             bias02 = 0;
     }
-    else { // split into two triangles
+    else {
         float alpha = (t1.y - t0.y) / (t2.y - t0.y);
         glm::vec2 t3 { glm::mix(t0.x, t2.x, alpha), t1.y };
 

@@ -30,6 +30,6 @@ TEST_CASE("draw_line")
 
         REQUIRE_NOTHROW(MyGL::DrawLine(461, 788, 495, 776, image, pixel_red));
 
-        image.write(image_name);
+        //image.write(image_name);
     }
 }
