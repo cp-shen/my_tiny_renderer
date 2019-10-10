@@ -126,60 +126,6 @@ void MyGL::DrawTriangle(
     }
 }
 
-void MyGL::_DrawFlatTopTriangle(
-        glm::vec2 t0,
-        glm::vec2 t1,
-        glm::vec2 t2,
-        png::image<png::rgb_pixel>& image,
-        png::rgb_pixel color)
-{
-    // bubble sort the vertices lower-to-upper
-    if (t0.y > t1.y) std::swap(t0, t1);
-    if (t1.y > t2.y) std::swap(t1, t2);
-    if (t0.y > t1.y) std::swap(t0, t1);
-
-    assert(t1.y == t2.y);
-    assert(t1.x != t2.x);
-    assert(t0.y < t1.y);
-
-    const int yStart = (int) std::ceil(t0.y - 0.5f);
-    const int yEnd = (int) std::ceil(t2.y - 0.5f);
-
-    for(int y = yStart; y < yEnd; y++) {
-        float alpha = (y - t0.y) / (t2.y - t0.y);
-        glm::vec2 point1 { glm::mix(t0.x, t2.x, alpha), y };
-        glm::vec2 point2 { glm::mix(t0.x, t1.x, alpha), y };
-        DrawLine(point1, point2, image, color);
-    }
-}
-
-void MyGL::_DrawFlatBottomTriangle(
-        glm::vec2 t0,
-        glm::vec2 t1,
-        glm::vec2 t2,
-        png::image<png::rgb_pixel>& image,
-        png::rgb_pixel color)
-{
-    // bubble sort the vertices lower-to-upper
-    if (t0.y > t1.y) std::swap(t0, t1);
-    if (t1.y > t2.y) std::swap(t1, t2);
-    if (t0.y > t1.y) std::swap(t0, t1);
-
-    assert(t0.y == t1.y);
-    assert(t0.x != t1.x);
-    assert(t2.y > t1.y);
-
-    const int yStart = (int) std::ceil(t0.y - 0.5f);
-    const int yEnd = (int) std::ceil(t2.y - 0.5f);
-
-    for(int y = t0.y; y < t2.y; y++) {
-        float alpha = (y - t0.y) / (t2.y - t0.y);
-        glm::vec2 point1 { glm::mix(t0.x, t2.x, alpha), y };
-        glm::vec2 point2 { glm::mix(t1.x, t2.x, alpha), y };
-        DrawLine(point1, point2, image, color);
-    }
-}
-
 void MyGL::FlipImageVert(png::image<png::rgb_pixel>& image)
 {
     for (size_t row_idx = 0; row_idx < image.get_height() / 2; row_idx++) {

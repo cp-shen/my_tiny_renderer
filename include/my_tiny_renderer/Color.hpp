@@ -7,14 +7,20 @@
 class Color {
 private:
     glm::vec3 _value;
+
 public:
     Color();
     Color(glm::vec3 rgb);
-    virtual ~Color();
+    Color(const Color& other) = default;
+    virtual ~Color() = default;
 
     glm::vec3 Value() const;
     png::rgb_pixel Pixel() const;
     void Set(glm::vec3 rgb);
+
+    Color operator+(const Color& other);
+    Color operator*(const Color& other);
+    Color operator*(const float& scale);
 
     static Color White;
     static Color Black;

@@ -2,19 +2,27 @@
 #define LIGHT_HPP
 
 #include <glm/glm.hpp>
+#include <my_tiny_renderer/Color.hpp>
 
 class Light {
 private:
 public:
-    Light ();
-    virtual ~Light () = 0;
+    Light();
+    virtual ~Light() = 0;
+
+    Color color;
 };
 
-class DirectionalLight {
-    public:
-        DirectionalLight();
-        virtual ~DirectionalLight();
-        glm::vec3 direction;
+class DirectionalLight : public Light {
+private:
+    glm::vec3 _direction;
+public:
+    DirectionalLight();
+    virtual ~DirectionalLight() = default;
+
+    float intensity;
+    glm::vec3 Direction() const;
+    void SetDirection(glm::vec3 dir);
 };
 
 #endif /* LIGHT_HPP */

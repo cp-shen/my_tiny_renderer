@@ -9,21 +9,7 @@
  */
 class MyGL {
 private:
-    static void _DrawFlatTopTriangle(
-            glm::vec2 t0,
-            glm::vec2 t1,
-            glm::vec2 t2,
-            png::image<png::rgb_pixel>& image,
-            png::rgb_pixel color
-            );
 
-    static void _DrawFlatBottomTriangle(
-            glm::vec2 t0,
-            glm::vec2 t1,
-            glm::vec2 t2,
-            png::image<png::rgb_pixel>& image,
-            png::rgb_pixel color
-            );
 public:
     MyGL();
     virtual ~MyGL();

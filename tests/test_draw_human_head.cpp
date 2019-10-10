@@ -1,6 +1,8 @@
 #include <catch2/catch.hpp>
 #include <my_tiny_renderer/Color.hpp>
+#include <my_tiny_renderer/Light.hpp>
 #include <my_tiny_renderer/MyGL.hpp>
+#include <my_tiny_renderer/Shape.hpp>
 #include <tinyobjloader-1.0.7/tiny_obj_loader.h>
 
 TEST_CASE("draw_human_head")
@@ -89,17 +91,16 @@ TEST_CASE("draw_human_head")
             for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
                 int fv = shapes[s].mesh.num_face_vertices[f];
 
-                // load tiangle vetex data
-                tinyobj::index_t idx_0 = shapes[s].mesh.indices[index_offset + 0];
-                tinyobj::index_t idx_1 = shapes[s].mesh.indices[index_offset + 1];
-                tinyobj::index_t idx_2 = shapes[s].mesh.indices[index_offset + 2];
+                tinyobj::index_t idx0 = shapes[s].mesh.indices[index_offset + 0];
+                tinyobj::index_t idx1 = shapes[s].mesh.indices[index_offset + 1];
+                tinyobj::index_t idx2 = shapes[s].mesh.indices[index_offset + 2];
 
-                tinyobj::real_t vx0 = attrib.vertices[3 * idx_0.vertex_index + 0];
-                tinyobj::real_t vy0 = attrib.vertices[3 * idx_0.vertex_index + 1];
-                tinyobj::real_t vx1 = attrib.vertices[3 * idx_1.vertex_index + 0];
-                tinyobj::real_t vy1 = attrib.vertices[3 * idx_1.vertex_index + 1];
-                tinyobj::real_t vx2 = attrib.vertices[3 * idx_2.vertex_index + 0];
-                tinyobj::real_t vy2 = attrib.vertices[3 * idx_2.vertex_index + 1];
+                tinyobj::real_t vx0 = attrib.vertices[3 * idx0.vertex_index + 0];
+                tinyobj::real_t vy0 = attrib.vertices[3 * idx0.vertex_index + 1];
+                tinyobj::real_t vx1 = attrib.vertices[3 * idx1.vertex_index + 0];
+                tinyobj::real_t vy1 = attrib.vertices[3 * idx1.vertex_index + 1];
+                tinyobj::real_t vx2 = attrib.vertices[3 * idx2.vertex_index + 0];
+                tinyobj::real_t vy2 = attrib.vertices[3 * idx2.vertex_index + 1];
 
                 float x0 = (vx0 + 1.) * (image_width / 2. - 1.);
                 float y0 = (vy0 + 1.) * (image_height / 2. - 1.);
@@ -108,28 +109,68 @@ TEST_CASE("draw_human_head")
                 float x2 = (vx2 + 1.) * (image_width / 2. - 1.);
                 float y2 = (vy2 + 1.) * (image_height / 2. - 1.);
 
-                REQUIRE(x0 >= 0);
-                REQUIRE(x0 < image_width);
-                REQUIRE(y0 >= 0);
-                REQUIRE(y0 < image_height);
+                glm::vec2 t0, t1, t2;
+                t0 = {x0, y0};
+                t1 = {x1, y1};
+                t2 = {x2, y2};
 
-                REQUIRE(x1 >= 0);
-                REQUIRE(x1 < image_width);
-                REQUIRE(y1 >= 0);
-                REQUIRE(y1 < image_height);
+                png::rgb_pixel pixel(rand() % 255, rand() % 255, rand() % 255);
+                REQUIRE_NOTHROW(MyGL::DrawTriangle(t0, t1, t2, image, pixel));
+                index_offset += fv;
+            }
+        }
+        MyGL::FlipImageVert(image);
+        image.write(image_name);
+    }
 
-                REQUIRE(x2 >= 0);
-                REQUIRE(x2 < image_width);
-                REQUIRE(y2 >= 0);
-                REQUIRE(y2 < image_height);
+    SECTION("draw_with_flat_shading")
+    {
+        const char* image_name = "human_head_flat_shading.png";
+        // Loop over shapes
+        for (size_t s = 0; s < shapes.size(); s++) {
+            // Loop over faces(polygon)
+            size_t index_offset = 0;
+            for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
+                int fv = shapes[s].mesh.num_face_vertices[f];
+
+                tinyobj::index_t idx0 = shapes[s].mesh.indices[index_offset + 0];
+                tinyobj::index_t idx1 = shapes[s].mesh.indices[index_offset + 1];
+                tinyobj::index_t idx2 = shapes[s].mesh.indices[index_offset + 2];
+
+                tinyobj::real_t vx0 = attrib.vertices[3 * idx0.vertex_index + 0];
+                tinyobj::real_t vy0 = attrib.vertices[3 * idx0.vertex_index + 1];
+                tinyobj::real_t vz0 = attrib.vertices[3 * idx0.vertex_index + 2];
+
+                tinyobj::real_t vx1 = attrib.vertices[3 * idx1.vertex_index + 0];
+                tinyobj::real_t vy1 = attrib.vertices[3 * idx1.vertex_index + 1];
+                tinyobj::real_t vz1 = attrib.vertices[3 * idx1.vertex_index + 2];
+
+                tinyobj::real_t vx2 = attrib.vertices[3 * idx2.vertex_index + 0];
+                tinyobj::real_t vy2 = attrib.vertices[3 * idx2.vertex_index + 1];
+                tinyobj::real_t vz2 = attrib.vertices[3 * idx2.vertex_index + 2];
+
+                float x0 = (vx0 + 1.) * (image_width / 2. - 1.);
+                float y0 = (vy0 + 1.) * (image_height / 2. - 1.);
+                float x1 = (vx1 + 1.) * (image_width / 2. - 1.);
+                float y1 = (vy1 + 1.) * (image_height / 2. - 1.);
+                float x2 = (vx2 + 1.) * (image_width / 2. - 1.);
+                float y2 = (vy2 + 1.) * (image_height / 2. - 1.);
 
                 glm::vec2 t0, t1, t2;
                 t0 = {x0, y0};
                 t1 = {x1, y1};
                 t2 = {x2, y2};
 
-                png::rgb_pixel pixel (rand() % 255, rand() % 255, rand() % 255);
-                REQUIRE_NOTHROW(MyGL::DrawTriangle(t0, t1, t2, image, pixel));
+                Triangle tri({vx0, vy0, vz0}, {vx1, vy1, vz1}, {vx2, vy2, vz2});
+
+                DirectionalLight light;
+                float scale = -glm::dot(light.Direction(), tri.Normal());
+
+                if (scale > 0) {
+                    Color color = light.color * light.intensity * scale;
+                    REQUIRE_NOTHROW(MyGL::DrawTriangle(t0, t1, t2, image, color.Pixel()));
+                }
+
                 index_offset += fv;
             }
         }
