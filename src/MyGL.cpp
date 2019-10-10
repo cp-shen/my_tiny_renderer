@@ -3,6 +3,7 @@
 #include <my_tiny_renderer/Math.hpp>
 #include <sstream>
 #include <algorithm>
+#include <stdexcept>
 
 void MyGL::DrawLine (
             int x0,
@@ -63,65 +64,39 @@ void MyGL::DrawTriangle(
         png::image<png::rgb_pixel>& image,
         png::rgb_pixel color)
 {
-    // bubble sort the vertices lower-to-upper
-    if (t0.y > t1.y) std::swap(t0, t1);
-    if (t1.y > t2.y) std::swap(t1, t2);
-    if (t0.y > t1.y) std::swap(t0, t1);
-
     float val = (t1.y - t0.y) * (t2.x - t1.x) - (t1.x - t0.x) * (t2.y - t1.y);
-    assert(val != 0); // should not be colinear
-    // the 3 vertices should be counter clock-wise
-    if(val > 0) {
-        std::swap(t0, t1);
-    }
-
-    int bias01 = -1;
-    int bias12 = -1;
-    int bias02 = -1;
-
-    if (t0.y == t1.y) {
-        bias01 = 0;
-        if(t0.x < t1.x)
-            bias02 = 0;
-        else
-            bias12 = 0;
-    }
-    else if (t1.y == t2.y) {
-        if(t1.x < t2.x)
-            bias01 = 0;
-        else
-            bias02 = 0;
-    }
-    else {
-        float alpha = (t1.y - t0.y) / (t2.y - t0.y);
-        glm::vec2 t3 { glm::mix(t0.x, t2.x, alpha), t1.y };
-
-        if (t1.x < t3.x) {
-            bias01 = 0;
-            bias12 = 0;
-        }
-        else {
-            bias02 = 0;
-        }
-    }
+    if (val == 0)
+        throw std::runtime_error("the 3 vertices of a triangle should not be colinear");
+    else if (val > 0)
+        std::swap(t0, t1); // the 3 vertices should be counter clock-wise
 
     // Compute triangle bounding box
-    int minX = std::min({t0.x, t1.x, t2.x});
-    int minY = std::min({t0.y, t1.y, t2.y});
-    int maxX = std::max({t0.x, t1.x, t2.x});
-    int maxY = std::max({t0.y, t1.y, t2.y});
+    int minX = std::floor(std::min({t0.x, t1.x, t2.x}));
+    int minY = std::floor(std::min({t0.y, t1.y, t2.y}));
+    int maxX = std::floor(std::max({t0.x, t1.x, t2.x}));
+    int maxY = std::floor(std::max({t0.y, t1.y, t2.y}));
+
+    glm::vec2 edge01 = t1 - t0;
+    glm::vec2 edge02 = t2 - t0;
+    glm::vec2 edge12 = t2 - t1;
 
     glm::ivec2 p(0);
 
     for (p.y = minY; p.y <= maxY; p.y++) {
         for (p.x = minX; p.x <= maxX; p.x++) {
-            float w0 = Math::EdgeFunction(t1, t2, p) + bias12;
-            float w1 = Math::EdgeFunction(t2, t0, p) + bias02;
-            float w2 = Math::EdgeFunction(t0, t1, p) + bias01;
+            bool overlaps = true;
+            glm::vec2 p_center = {p.x + .5f, p.y + .5f};
 
-            if (w0 >= 0 && w1 >= 0 && w2 >= 0) {
+            float w0 = Math::EdgeFunction(t1, t2, p_center);
+            float w1 = Math::EdgeFunction(t2, t0, p_center);
+            float w2 = Math::EdgeFunction(t0, t1, p_center);
+
+            overlaps &= (w0 == 0 ? ((edge12.y == 0 && edge12.x < 0) || edge12.y < 0) : (w0 > 0));
+            overlaps &= (w1 == 0 ? ((edge02.y == 0 && edge02.x < 0) || edge02.y < 0) : (w1 > 0));
+            overlaps &= (w2 == 0 ? ((edge01.y == 0 && edge01.x < 0) || edge01.y < 0) : (w2 > 0));
+
+            if (overlaps)
                 image.set_pixel(p.x, p.y, color);
-            }
         }
     }
 }
