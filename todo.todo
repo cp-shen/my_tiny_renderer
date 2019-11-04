@@ -1,0 +1,7 @@
+- [ ] vertex processing
+  - [ ] matrix and transformations
+- [ ] resterizer
+  - [ ] draw line (diamond-exit rule)
+  - [x] draw triangle (top-left rule)
+- [ ] frame buffer
+  - [x] png image r/w
