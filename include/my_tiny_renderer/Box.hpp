@@ -11,7 +11,7 @@ public:
     Box (unsigned w, unsigned h);
     virtual ~Box ();
     bool CheckPointInBox(glm::vec2 point);
-    bool CheckPointOnEgde(glm::vec2 point);
+    bool CheckPointOnEdge(glm::vec2 point);
 };
 
 #endif /* BOX_HPP */

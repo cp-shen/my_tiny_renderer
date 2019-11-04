@@ -14,7 +14,7 @@ bool Box::CheckPointInBox(glm::vec2 point)
         && point.y > _minPoint.y && point.y < _maxPoint.y;
 }
 
-bool Box::CheckPointOnEgde(glm::vec2 point)
+bool Box::CheckPointOnEdge(glm::vec2 point)
 {
     if (point.x != _minPoint.x || point.x != _maxPoint.x) {
         return false;
