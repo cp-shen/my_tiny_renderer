@@ -46,3 +46,6 @@ _deps
 [Bb]uild/
 tags
 *.png
+
+.idea/
+cmake-build-debug/
