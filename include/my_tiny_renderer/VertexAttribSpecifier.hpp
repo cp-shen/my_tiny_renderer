@@ -27,7 +27,7 @@ public:
     ~VertexAttribSpecifier();
 
     /// \return
-    /// the number of vertex attribute count excluding position
+    /// the number of vertex attribute count including position
     unsigned GetAttribCount() const;
 
     /// \param names

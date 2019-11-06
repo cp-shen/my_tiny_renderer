@@ -11,9 +11,20 @@
 #include <map>
 
 class VertexDataSet {
-    std::vector<float> data;
-    unsigned vertexCount;
-    VertexAttribSpecifier attribSpecifier;
+    std::vector<float> _data;
+    unsigned _vertexCount;
+    VertexAttribSpecifier _attribSpecifier;
+
+public:
+    VertexDataSet(unsigned vertCount, float *data, unsigned size);
+
+    VertexDataSet();
+
+    ~VertexDataSet();
+
+    unsigned GetVertexCount() const;
+
+    VertexAttribSpecifier& AttribSpecifier();
 };
 
 
