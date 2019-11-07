@@ -1,18 +1,17 @@
-#ifndef MYGL_HPP
-#define MYGL_HPP
+#ifndef MY_GL_HPP
+#define MY_GL_HPP
 
 #include <png++/png.hpp>
 #include <glm/glm.hpp>
 
 /**
- * \brief conataining static methods to draw
+ * \brief containing static methods to draw
  */
 class MyGL {
 private:
-
-public:
     MyGL();
     virtual ~MyGL();
+public:
     /**
      * \brief draw a line using Bresenham's line algorithm
      * \param[in]  x0
@@ -65,4 +64,4 @@ public:
     static void FlipImageHor(png::image<png::rgb_pixel>& image);
 };
 
-#endif /* MYGL_H */
+#endif /* MY_GL_HPP */

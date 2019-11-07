@@ -1,9 +1,12 @@
 #include <my_tiny_renderer/MyGL.hpp>
 #include <my_tiny_renderer/Box.hpp>
 #include <my_tiny_renderer/Math.hpp>
-#include <sstream>
 #include <algorithm>
 #include <stdexcept>
+
+MyGL::MyGL() = default;
+
+MyGL::~MyGL() = default;
 
 void MyGL::DrawLine (
             int x0,
