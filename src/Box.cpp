@@ -1,12 +1,11 @@
 #include <my_tiny_renderer/Box.hpp>
 
 Box::Box(unsigned w, unsigned h)
-{
-    _minPoint = glm::vec2(0, 0);
-    _maxPoint = glm::vec2(w, h);
-}
+    : _minPoint(0, 0)
+    , _maxPoint(w, h)
+{ }
 
-Box::~Box() { }
+Box::~Box() = default;
 
 bool Box::CheckPointInBox(glm::vec2 point)
 {

@@ -4,7 +4,7 @@ Light::Light()
     : color(Color::White)
 { }
 
-Light::~Light() {  }
+Light::~Light() = default;
 
 DirectionalLight::DirectionalLight()
     : Light()

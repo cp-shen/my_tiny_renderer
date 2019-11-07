@@ -18,7 +18,7 @@ private:
     glm::vec3 _direction;
 public:
     DirectionalLight();
-    virtual ~DirectionalLight() = default;
+    ~DirectionalLight() override = default;
 
     float intensity;
     glm::vec3 Direction() const;
