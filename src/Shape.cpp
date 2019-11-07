@@ -4,7 +4,7 @@ Shape::Shape(size_t size)
     : vertices(size)
 { }
 
-Shape::~Shape() {  }
+Shape::~Shape() = default;
 
 glm::vec3& Shape::operator[](size_t idx) {
     return this->vertices[idx];

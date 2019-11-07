@@ -21,7 +21,7 @@ private:
 public:
     Triangle(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2);
     glm::vec3 Normal() const;
-    virtual ~Triangle() = default;
+    ~Triangle() override = default;
 };
 
 #endif /* SHAPE_HPP */
