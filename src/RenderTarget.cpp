@@ -3,3 +3,7 @@
 //
 
 #include "my_tiny_renderer/RenderTarget.hpp"
+
+RenderTarget::RenderTarget() = default;
+
+RenderTarget::~RenderTarget() = default;
