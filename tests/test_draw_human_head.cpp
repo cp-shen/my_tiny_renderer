@@ -3,6 +3,7 @@
 #include <my_tiny_renderer/Light.hpp>
 #include <my_tiny_renderer/MyGL.hpp>
 #include <my_tiny_renderer/Shape.hpp>
+#include <my_tiny_renderer/Image.hpp>
 #include <tinyobjloader-1.0.7/tiny_obj_loader.h>
 
 TEST_CASE("draw_human_head")
@@ -10,7 +11,7 @@ TEST_CASE("draw_human_head")
     const int image_height = 512;
     const int image_width = 512;
 
-    png::image<png::rgb_pixel> image(image_width, image_height);
+    PngImage image(image_width, image_height);
     png::rgb_pixel pixel_white(255, 255, 255);
 
     std::string inputfile = "models/african_head/african_head.obj";
@@ -77,7 +78,7 @@ TEST_CASE("draw_human_head")
                 index_offset += fv;
             }
         }
-        MyGL::FlipImageVert(image);
+        image.FlipVert();
         image.write(image_name);
     }
 
@@ -119,7 +120,7 @@ TEST_CASE("draw_human_head")
                 index_offset += fv;
             }
         }
-        MyGL::FlipImageVert(image);
+        image.FlipVert();
         image.write(image_name);
     }
 
@@ -174,7 +175,7 @@ TEST_CASE("draw_human_head")
                 index_offset += fv;
             }
         }
-        MyGL::FlipImageVert(image);
+        image.FlipVert();
         image.write(image_name);
     }
 }

@@ -15,9 +15,10 @@ public:
     virtual void FlipHor() = 0;
 };
 
-class PngImage : IImage, png::image<png::rgb_pixel> {
+class PngImage : public IImage, public png::image<png::rgb_pixel> {
 public:
     PngImage(unsigned w, unsigned h);
+    explicit PngImage(const char* filePath);
     PngImage();
     ~PngImage() override;
     void FlipVert() override;

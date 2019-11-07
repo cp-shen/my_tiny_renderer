@@ -1,12 +1,13 @@
 #include <catch2/catch.hpp>
 #include <my_tiny_renderer/Color.hpp>
 #include <my_tiny_renderer/MyGL.hpp>
+#include <my_tiny_renderer/Image.hpp>
 
 TEST_CASE("draw_triangle")
 {
     const char* output_path = "test_draw_triangle.png";
     const unsigned image_size = 256;
-    png::image<png::rgb_pixel> image(image_size, image_size);
+    PngImage image(image_size, image_size);
 
     glm::vec2 triangle0[] = {
         glm::vec2(10, 70),
@@ -31,6 +32,6 @@ TEST_CASE("draw_triangle")
     REQUIRE_NOTHROW(MyGL::DrawTriangle(triangle2[0], triangle2[1], triangle2[2],
                                        image, Color::Green.Pixel()));
 
-    MyGL::FlipImageVert(image);
+    image.FlipVert();
     image.write(output_path);
 }
