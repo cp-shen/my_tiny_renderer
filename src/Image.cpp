@@ -8,8 +8,6 @@ IImage::IImage() = default;
 
 IImage::~IImage() = default;
 
-PngImage::PngImage() = default;
-
 PngImage::PngImage(unsigned w, unsigned h)
     : IImage()
     , png::image<png::rgb_pixel>(w, h)
