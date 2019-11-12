@@ -8,7 +8,7 @@ class Shape {
 protected:
     std::vector<glm::vec3> vertices;
 public:
-    Shape(size_t size);
+    explicit Shape(size_t size);
     virtual ~Shape() = 0;
     Shape(const Shape& other) = default;
 
